@@ -32,7 +32,7 @@ warehouse_load = st.number_input(
 order_hour = st.number_input(
     "Order Hour",
     min_value=0.0,
-    max_value=23.0,
+    max_value=10.0,
     value=3.0
 )
 items_count = st.number_input(
@@ -54,3 +54,13 @@ carrier_delay_rate = st.number_input(
     max_value=100.0,
     value=50.0
 )
+if st.button("🚚 Predict Delay Risk"):
+        input_data = pd.DataFrame([{
+        "distance_km": distance_km,
+        "warehouse_load": warehouse_load,
+        "order_hour": order_hour,
+        "items_count": items_count,
+        "weather_risk": weather_risk,
+        "carrier_delay_rate": carrier_delay_rate
+    }])
+        input_scaled = scaler.transform(input_data)
