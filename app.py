@@ -55,7 +55,7 @@ carrier_delay_rate = st.number_input(
     value=50.0
 )
 if st.button("🚚 Predict Delay Risk"):
-        input_data = pd.DataFrame([{
+    input_data = pd.DataFrame([{
         "distance_km": distance_km,
         "warehouse_load": warehouse_load,
         "order_hour": order_hour,
@@ -63,4 +63,15 @@ if st.button("🚚 Predict Delay Risk"):
         "weather_risk": weather_risk,
         "carrier_delay_rate": carrier_delay_rate
     }])
-        input_scaled = scaler.transform(input_data)
+
+    input_scaled = scaler.transform(input_data)
+
+    prediction = model.predict(input_scaled)[0]
+    probability = model.predict_proba(input_scaled)[0][1]
+
+    st.subheader("Prediction Result")
+
+    if prediction == 1:
+        st.error(f"⚠️ High Delay Risk — Probability: {probability:.2%}")
+    else:
+        st.success(f"✅ Low Delay Risk — Probability: {probability:.2%}")
